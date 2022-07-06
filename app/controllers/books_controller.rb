@@ -1,15 +1,24 @@
 class BooksController < ApplicationController
+  impressionist :actions=> [:show]
 
   def show
     @book = Book.find(params[:id])
+    impressionist(@book, nil, unique: [:session_hash])
     @book_new = Book.new
     @user = @book.user
     @post_comment = PostComment.new
   end
 
   def index
-    @books = Book.all
-    @book = Book.new
+    to  = Time.current.at_end_of_day
+    from  = (to - 6.day).at_beginning_of_day
+    @books = Book.includes(:favorited_users).
+      sort {|a,b|
+        b.favorited_users.includes(:favorites).where(created_at: from...to).size <=>
+        a.favorited_users.includes(:favorites).where(created_at: from...to).size
+      }
+    @book_new = Book.new
+    #impressionist(@books_id, nil, unique: [:session_hash])
   end
 
   def create
