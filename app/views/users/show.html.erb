@@ -10,6 +10,17 @@
       <h2>Books</h2>
       <%= render 'books/index',books: @books %>
 
+      <%= form_with url: user_search_path(@user), method: :get, local: false do |f| %>
+        <%= f.date_field :created_at %>
+        <%= f.submit '検索', class: 'btn btn-primary'  %>
+      <% end %>
+
+      <div id="search_result">
+        <% if @search_book.present? %>
+          <%= render 'search', search_book: @search_book %>　#③
+        <% end %>
+      </div>
+
       <h2>投稿数の前日比・前週比</h2>
       <table class="table table-bordered">
         <thead>
@@ -83,23 +94,32 @@
         </tbody>
       </table>
       <div>
-        <canvas id="myChart" width="300" height="100"></canvas>
+        <div>
+          <canvas id="myChart"></canvas>
+        </div>
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         <script>
-        var ctx = document.getElementById("myChart").getContext('2d');
-        var myChart = new Chart(ctx, {
+          const labels = ['6日前','5日前','4日前','3日前','2日前','昨日','今日'];
+          const data = {
+            labels: labels,
+            datasets: [{
+              label: "投稿数",
+              backgroundColor: 'rgb(255, 99, 132)',
+              borderColor: 'rgb(255, 99, 132)',
+              data: [<%= @books.created_6days.count %>, <%= @books.created_5days.count %>, <%= @books.created_4days.count %>, <%= @books.created_3days.count %>, <%= @books.created_2days.count %>, <%= @yesterday_book.count %>, <%= @today_book.count%>],
+            }]
+          };
+          const config = {
             type: 'line',
-            data: {
-                labels: ['6日前', '5日前', '4日前', '3日前', '2日前', '1日前', '今日'],
-                datasets: [{
-                    label: "投稿数",
-                    data: [<%= @books.created_6days.count %>, <%= @books.created_5days.count %>, <%= @books.created_4days.count %>, <%= @books.created_3days.count %>, <%= @books.created_2days.count %>, <%= @yesterday_book.count %>, <%= @today_book.count%>],
-                    backgroundColor: 'rgba(255, 80, 120, 1.0)',
-                    borderColor: 'rgba(255, 80, 120, 1.0)',
-                    fill: false
-                    }]
-                  },
-            });
+            data: data,
+            options: {}
+          };
+        </script>
+        <script>
+          const myChart = new Chart(
+            document.getElementById('myChart'),
+            config
+          );
         </script>
       </div>
     </div>
