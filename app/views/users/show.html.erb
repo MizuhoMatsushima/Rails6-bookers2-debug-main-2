@@ -15,7 +15,7 @@
         <%= f.submit '検索', class: 'btn btn-primary'  %>
       <% end %>
 
-      <div id="search_result">
+      <div id="search_result", class="pb-3">
         <% if @search_book.present? %>
           <%= render 'search', search_book: @search_book %>　#③
         <% end %>
@@ -62,7 +62,7 @@
               前週の投稿はありません
              <% else %>
              　<% @the_week_before =   @this_week_book.count / @last_week_book.count.to_f  %>
-             　<%= (@the_week_before * 100).round %>
+             　<%= (@the_week_before * 100).round  %>
              <% end %>
             </td>
           </tr>
