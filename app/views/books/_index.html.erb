@@ -21,6 +21,21 @@
           <%= render "favorites/favorite", book: book %>
         </td>
         <td>コメント数：<%= book.post_comments.count %></td>
+        <td>
+          <div id="star-rate<%= book.id%>"></div>
+            <script>
+            $('#star-rate<%= book.id%>').raty({
+             size      : 36,
+                starOff   : '<%= asset_path('star-off.png') %>',
+                starOn    : '<%= asset_path('star-on.png') %>',
+                starHalf: : '<%= asset_path('star-half.png') %>',
+                half      : true,
+                readOnly  : true,
+                score     : <%= book.rate %>
+              });
+            </script>
+          </div>
+        </td>
         <td>閲覧数：<%= book.impressionist_count %></td>
         <td>投稿日時：<%= book.created_at.strftime('%Y/%m/%d') %></td>
       </tr>

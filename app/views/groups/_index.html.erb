@@ -5,7 +5,7 @@
       <th></th>
       <th>グループ名</th>
       <th>紹介文</th>
-      <th></th>
+      <th colspan="2"></th>
     </tr>
   </thead>
   <tbody>
@@ -16,6 +16,7 @@
         <%= link_to group.name, group %>
       </td>
       <td><%= group.introduction %></td>
+      <td><%= group.users.count %></td>
       <td>
         <% if group.owner_id == current_user.id %>
           <%= link_to 'Edit', edit_group_path(group), class: 'btn btn-success' %>

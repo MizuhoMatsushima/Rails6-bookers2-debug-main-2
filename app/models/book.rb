@@ -7,6 +7,15 @@ class Book < ApplicationRecord
   validates :title,presence:true
   validates :body,presence:true,length:{maximum:200}
 
+  #星の評価
+  #validates :evaluation, presence: true
+  #validates :evaluation, numericality: {
+    # only_integer: true,
+  #  less_than_or_equal_to: 5,
+  #  greater_than_or_equal_to: 1,
+  #}
+
+
   #PV数の計測
   is_impressionable
 
@@ -25,7 +34,7 @@ class Book < ApplicationRecord
   #scope :created_last_week, -> { where(created_at: 2.week.ago.beginning_of_day..1.week.ago.end_of_day) } # 前週
 
   #1週間のグラフ作成
-  scope :created_days_ago, ->(n) { where(created_at: n.days.ago.all_day) }
+  #scope :created_days_ago, ->(n) { where(created_at: n.days.ago.all_day) }
 
   def self.past_week_count
    (1..6).map { |n| created_days_ago(n).count }.reverse
