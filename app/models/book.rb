@@ -8,12 +8,16 @@ class Book < ApplicationRecord
   validates :body,presence:true,length:{maximum:200}
 
   #星の評価
-  #validates :evaluation, presence: true
-  #validates :evaluation, numericality: {
-    # only_integer: true,
-  #  less_than_or_equal_to: 5,
-  #  greater_than_or_equal_to: 1,
-  #}
+  validates :rate, presence: true
+  validates :rate, numericality: {
+    only_float: true,
+    less_than_or_equal_to: 5,
+    greater_than_or_equal_to: 0.5,
+  }
+
+  #評価順/新着順に並べ替え
+  scope :latest, -> {order(created_at: :desc)}
+  scope :rating, -> {order(rate: :desc)}
 
 
   #PV数の計測
@@ -56,6 +60,10 @@ class Book < ApplicationRecord
     else
       @book = Book.all
     end
+  end
+
+  def self.looks(search, keyword)
+    Book.where(['category LIKE ?', "#{keyword}"])
   end
 
 end

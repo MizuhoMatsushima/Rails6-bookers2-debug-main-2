@@ -12,6 +12,10 @@
           <%= f.label :opinion %>
           <%= f.text_area :body, class: 'form-control book_body' %>
         </div>
+        <div>カテゴリ：<%= @book.category %></div>
+        <div crass:"margin-bottom-2">
+          <%= render 'layouts/star-read', book: @book %>
+        </div>
         <div class="form-group">
           <%= f.submit 'Update Book',class: 'btn btn-success' %>
         </div>

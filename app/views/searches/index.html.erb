@@ -38,6 +38,12 @@
             <% end %>
           </td>
           <td><%= book.body %></td>
+          <td><%= link_to book.category, search_book_path(keyword: book.category) %></td>
+          <td class="favorite_<%= book.id %>">
+            <%= render "favorites/favorite", book: book %>
+          </td>
+          <td>コメント数：<%= book.post_comments.count %></td>
+          <td><%= render 'layouts/star-read', book: book %></td>
         </tr>
       <% end %>
     </tbody>

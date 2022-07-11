@@ -10,16 +10,25 @@ class BooksController < ApplicationController
   end
 
   def index
-    to  = Time.current.at_end_of_day
-    from  = (to - 6.day).at_beginning_of_day
-    @books = Book.includes(:favorited_users).
-      sort {|a,b|
-        b.favorited_users.includes(:favorites).where(created_at: from...to).size <=>
-        a.favorited_users.includes(:favorites).where(created_at: from...to).size
-      }
+    if params[:latest]
+      @books = Book.latest
+    else
+      @books = Book.rating
+    end
     @book_new = Book.new
-    #impressionist(@books_id, nil, unique: [:session_hash])
   end
+
+  #いいね順に並び替え
+  #def index
+  #  to  = Time.current.at_end_of_day
+  #  from  = (to - 6.day).at_beginning_of_day
+  #  @books = Book.includes(:favorited_users).
+  #    sort {|a,b|
+  #      b.favorited_users.includes(:favorites).where(created_at: from...to).size <=>
+  #      a.favorited_users.includes(:favorites).where(created_at: from...to).size
+  #    }
+  #  @book_new = Book.new
+  #end
 
   def create
     @book = Book.new(book_params)
@@ -55,9 +64,14 @@ class BooksController < ApplicationController
     redirect_to books_path
   end
 
+  def search_book
+    @book = Book.new
+    @books = Book.looks(params[:search], params[:keyword])
+  end
+
   private
 
   def book_params
-    params.require(:book).permit(:title, :body)
+    params.require(:book).permit(:title, :body, :category, :rate)
   end
 end

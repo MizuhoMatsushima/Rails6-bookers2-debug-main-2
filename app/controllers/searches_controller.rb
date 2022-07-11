@@ -17,5 +17,7 @@ before_action :authenticate_user!
       render :index
     end
   end
+  
+  
 
 end

@@ -10,6 +10,12 @@
             <%= f.submit "検索", class: "btn btn-primary" %>
           <% end %>
         </div>
+        <div class="search_book">
+          <%= form_with url: search_book_path, local: true, method: :get do |f| %>
+            <%= f.text_field :keyword %>
+            <%= f.submit "タグ検索", class: "btn btn-primary" %>
+          <% end %>
+        </div>
       <% end %>
     </div>
   </div>
