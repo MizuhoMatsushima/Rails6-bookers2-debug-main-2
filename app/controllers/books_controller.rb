@@ -66,7 +66,7 @@ class BooksController < ApplicationController
 
   def search_book
     @book = Book.new
-    @books = Book.looks(params[:search], params[:keyword])
+    @books = Book.looks(params[:keyword])
   end
 
   private

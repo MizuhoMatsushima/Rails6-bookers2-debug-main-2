@@ -62,7 +62,7 @@ class Book < ApplicationRecord
     end
   end
 
-  def self.looks(search, keyword)
+  def self.looks(keyword)
     Book.where(['category LIKE ?', "#{keyword}"])
   end
 
